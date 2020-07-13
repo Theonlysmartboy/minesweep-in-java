@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -35,10 +36,10 @@ public final class MineSweep implements ActionListener, MouseListener {
     private JPanel composite = new JPanel();
     private JPanel topPanel = new JPanel();
     private JPanel bottomPanel = new JPanel();
-    Font font = new Font("Serif",Font.BOLD,18);
-    Font devFont = new Font("Serif",Font.PLAIN,12);
+    Font font = new Font("Serif", Font.BOLD, 18);
+    Font devFont = new Font("Serif", Font.PLAIN, 12);
     Border border = BorderFactory.createLineBorder(Color.blue);
-    Dimension preferredItmSize = new Dimension(30,30);
+    Dimension preferredItmSize = new Dimension(30, 30);
 
     ImageIcon smileyImageIcon = null;
     ImageIcon tImageIcon = null;
@@ -50,8 +51,9 @@ public final class MineSweep implements ActionListener, MouseListener {
     ImageIcon threeImageIcon = null;
     ImageIcon fourImageIcon = null;
     ImageIcon fiveImageIcon = null;
-    
+
     String text = "";
+    int score = 0;
 
     public MineSweep() {
         screen = new JFrame("MineSweeper by Tosby, otemainc.com");
@@ -70,12 +72,12 @@ public final class MineSweep implements ActionListener, MouseListener {
         points.setForeground(Color.blue);
         points.setFont(font);
         points.setPreferredSize(preferredItmSize);
-        
+
         dev.setOpaque(true);
         dev.setBorder(border);
         dev.setForeground(Color.blue);
         dev.setFont(devFont);
-        
+
         topPanel.add(smiley);
         topPanel.add(points);
         composite.add(topPanel, BorderLayout.NORTH);
@@ -92,7 +94,7 @@ public final class MineSweep implements ActionListener, MouseListener {
         smileyImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\smiley.png");
         tImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\t.png");
         pitImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\pit.png");
-        lossImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\loss.png");
+        lossImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\lose.png");
         cryImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\cry.png");
         oneImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\1.png");
         twoImageIcon = getScaledImage("C:\\Users\\MASENO\\OneDrive\\Documents\\NetBeansProjects\\Minesweep\\src\\res\\2.png");
@@ -164,7 +166,6 @@ public final class MineSweep implements ActionListener, MouseListener {
 
                 if (about == ae.getSource()) {
                     text = " Designed and developped by Tosby Of Otema Technologies";
-                    System.out.println(text);
                     dev.setText(text);
                 }
             }
@@ -499,8 +500,18 @@ public final class MineSweep implements ActionListener, MouseListener {
                 if (button[i][j] == me.getSource()) {
                     if (mineArray[i][j] == 9) {
                         smiley.setIcon(lossImageIcon);
+                        int a = JOptionPane.showConfirmDialog(screen, "Game Over. \n You scored " + 
+                                score+ " Points"+ "\nDo you want to try again?",
+                                "Game Over",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+                        if (a == JOptionPane.YES_OPTION) {
+                            reset();
+                        } else if (a == JOptionPane.NO_OPTION) {
+                            System.exit(0);
+                        }
                     } else {
                         smiley.setIcon(smileyImageIcon);
+                        score = Integer.valueOf(points.getText()) + 1;
+                        points.setText(Integer.toString(score));
                     }
                 }
 
