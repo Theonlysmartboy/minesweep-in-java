@@ -3,6 +3,7 @@ package minesweep;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -10,24 +11,34 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
+import javax.swing.BorderFactory;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 /**
  * Author: Tosby
  */
-public class MineSweep implements ActionListener, MouseListener {
+public final class MineSweep implements ActionListener, MouseListener {
 
     private JFrame screen = null;
     private JButton smiley = new JButton("");
+    private JLabel points = new JLabel("0");
+    private JLabel dev = new JLabel("");
     private JPanel composite = new JPanel();
     private JPanel topPanel = new JPanel();
+    private JPanel bottomPanel = new JPanel();
+    Font font = new Font("Serif",Font.BOLD,18);
+    Font devFont = new Font("Serif",Font.PLAIN,12);
+    Border border = BorderFactory.createLineBorder(Color.blue);
+    Dimension preferredItmSize = new Dimension(30,30);
 
     ImageIcon smileyImageIcon = null;
     ImageIcon tImageIcon = null;
@@ -39,9 +50,11 @@ public class MineSweep implements ActionListener, MouseListener {
     ImageIcon threeImageIcon = null;
     ImageIcon fourImageIcon = null;
     ImageIcon fiveImageIcon = null;
+    
+    String text = "";
 
     public MineSweep() {
-        screen = new JFrame("MineSweeper by Karthick, TutorialFlow.com");
+        screen = new JFrame("MineSweeper by Tosby, otemainc.com");
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         screen.setVisible(true);
         screen.setResizable(false);
@@ -49,10 +62,25 @@ public class MineSweep implements ActionListener, MouseListener {
         loadMinesweeperImages();
 
         composite.setLayout(new BorderLayout());
-        smiley.setPreferredSize(new Dimension(25, 25));
+        smiley.setPreferredSize(preferredItmSize);
         smiley.setIcon(smileyImageIcon);
+        points.setOpaque(true);
+        points.setBorder(border);
+        points.setBackground(Color.green);
+        points.setForeground(Color.blue);
+        points.setFont(font);
+        points.setPreferredSize(preferredItmSize);
+        
+        dev.setOpaque(true);
+        dev.setBorder(border);
+        dev.setForeground(Color.blue);
+        dev.setFont(devFont);
+        
         topPanel.add(smiley);
+        topPanel.add(points);
         composite.add(topPanel, BorderLayout.NORTH);
+        bottomPanel.add(dev);
+        composite.add(bottomPanel, BorderLayout.AFTER_LAST_LINE);
         smiley.addActionListener(this);
         smiley.addMouseListener(this);
         arrangeButtons();
@@ -101,28 +129,28 @@ public class MineSweep implements ActionListener, MouseListener {
 
             public void actionPerformed(ActionEvent ae) {
                 if (miNew == ae.getSource()) {
-                    btnwdth = 10;
-                    btnhgt = 10;
+                    btnwdth = 15;
+                    btnhgt = 15;
                     mines = 10;
                     reset();
                 }
                 if (miBeg == ae.getSource()) {
-                    btnwdth = 12;
-                    btnhgt = 12;
+                    btnwdth = 17;
+                    btnhgt = 17;
                     mines = 12;
                     reset();
 
                 }
                 if (miInter == ae.getSource()) {
-                    btnwdth = 15;
-                    btnhgt = 15;
+                    btnwdth = 20;
+                    btnhgt = 20;
                     mines = 50;
                     reset();
 
                 }
                 if (miExp == ae.getSource()) {
-                    btnwdth = 24;
-                    btnhgt = 30;
+                    btnwdth = 29;
+                    btnhgt = 35;
                     mines = 80;
                     reset();
                 }
@@ -135,7 +163,9 @@ public class MineSweep implements ActionListener, MouseListener {
                 }
 
                 if (about == ae.getSource()) {
-                    System.out.println(" Karthick");
+                    text = " Designed and developped by Tosby Of Otema Technologies";
+                    System.out.println(text);
+                    dev.setText(text);
                 }
             }
 
@@ -152,11 +182,11 @@ public class MineSweep implements ActionListener, MouseListener {
         return mBar;
     }
 
-    private int btnwdth = 10;
+    private int btnwdth = 15;
 
-    private int btnhgt = 10;
+    private int btnhgt = 15;
 
-    private int mines = 8;
+    private int mines = 10;
 
     int mineArray[][];
 
